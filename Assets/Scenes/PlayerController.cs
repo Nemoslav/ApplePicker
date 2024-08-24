@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -15,17 +16,19 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update()
-    {
-        // Получаем ввод по горизонтали (движение влево и вправо)
-        float moveInput = Input.GetAxisRaw("Horizontal");
+    { while (GameManager.Instance.Game)
+        {
+            // Получаем ввод по горизонтали (движение влево и вправо)
+            float moveInput = Input.GetAxisRaw("Horizontal");
 
-        // Вычисляем новую позицию корзины
-        float newPositionX = rb.position.x + moveInput * speed * Time.deltaTime;
+            // Вычисляем новую позицию корзины
+            float newPositionX = rb.position.x + moveInput * speed * Time.deltaTime;
 
-        // Ограничиваем движение корзины в пределах экрана
-        newPositionX = Mathf.Clamp(newPositionX, -moveLimit, moveLimit);
+            // Ограничиваем движение корзины в пределах экрана
+            newPositionX = Mathf.Clamp(newPositionX, -moveLimit, moveLimit);
 
-        // Устанавливаем новую позицию корзины
-        rb.MovePosition(new Vector2(newPositionX, rb.position.y));
+            // Устанавливаем новую позицию корзины
+            rb.MovePosition(new Vector2(newPositionX, rb.position.y));
+        }
     }
 }

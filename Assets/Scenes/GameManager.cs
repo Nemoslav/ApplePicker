@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,8 +15,14 @@ public class GameManager : MonoBehaviour
     public float startDelay = 1f; // Задержка перед началом спауна
 
     private int score = 0; // Текущий счет игрока
-    public Text scoreText; // Ссылка на UI текст для отображения счета
+    public TMP_Text scoreText; // Ссылка на UI текст для отображения счета
 
+    private int lives = 3;
+    public TMP_Text livesText;
+
+   public bool Game = true;
+
+   public GameObject MenuPunel;
     void Awake()
     {
         // Убедимся, что у нас есть только один экземпляр GameManager
@@ -35,12 +43,17 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SpawnApples());
     }
 
+    void Menu()
+    {
+
+    }
+
     IEnumerator SpawnApples()
     {
         // Задержка перед началом спауна
         yield return new WaitForSeconds(startDelay);
 
-        while (true)
+        while (Game)
         {
             // Получаем случайную позицию для появления яблока
             float randomX = Random.Range(-6f, 6f);
@@ -59,12 +72,36 @@ public class GameManager : MonoBehaviour
         UpdateScoreText(); // Обновляем отображение счета
     }
 
+   
     void UpdateScoreText()
     {
         // Проверяем, что UI текст для отображения счета существует
         if (scoreText != null)
         {
-            scoreText.text = "Score: " + score.ToString();
+            scoreText.text = score.ToString();
+        }
+    }
+
+    public void LostLive()
+    {
+        if(lives <= 0)
+        {
+            Game = false;
+        }
+        if (lives > 0)
+        {
+            lives--; // Уменьшаем кол-во жизней
+            UpdateLivesText(); // Обновляем отображение счета
+        }
+    }
+
+
+    void UpdateLivesText()
+    {
+        // Проверяем, что UI текст для отображения счета существует
+        if (livesText != null)
+        {
+            livesText.text = lives.ToString();
         }
     }
 }

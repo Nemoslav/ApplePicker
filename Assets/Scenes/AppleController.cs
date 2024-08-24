@@ -22,6 +22,9 @@ public class AppleController : MonoBehaviour
         if (rb.position.y < -6f)
         {
             Destroy(gameObject);
+
+            // Уменьшаем кол-во жизней
+            GameManager.Instance.LostLive();
         }
     }
 
